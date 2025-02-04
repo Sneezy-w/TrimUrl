@@ -3,6 +3,11 @@ import { engine } from "express-handlebars";
 import admin from "./config/firebase-config.js";
 import checkLoggedIn from "./helpers/checkLoggedIn.js";
 import cookieParser from "cookie-parser";
+//import ensureAuthenticated from "./middleware/auth.js";
+import connectDB from "./config/mongodb.js";
+
+connectDB();
+
 const app = express();
 app.use(cookieParser());
 app.use(express.json());

@@ -2,7 +2,7 @@ const ensureAuthenticated = (req, res, next) => {
   if (res.locals.logged_in.status) {
     return next();
   }
-  res.redirect("/auth/login");
+  res.redirect('/');
 };
 
 export default ensureAuthenticated;

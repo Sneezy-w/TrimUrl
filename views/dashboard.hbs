@@ -1,0 +1,76 @@
+<div class="container mt-5">
+  <h2>URL Shortener</h2>
+  
+  {{#if logged_in.status}}
+    <div class="card mb-4">
+      <div class="card-body">
+        <form id="urlForm">
+          <div class="mb-3">
+            <label for="url" class="form-label">Enter URL to shorten</label>
+            <input type="url" class="form-control" id="url" name="url" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Shorten URL</button>
+        </form>
+      </div>
+    </div>
+
+    <h3>Your URLs</h3>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Original URL</th>
+            <th>Short URL</th>
+            <th>Clicks</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each urls}}
+            <tr>
+              <td>{{this.originalUrl}}</td>
+              <td>
+                <a href="/{{this.shortCode}}" target="_blank">
+                  {{../baseUrl}}/{{this.shortCode}}
+                </a>
+              </td>
+
+              <td>{{this.clicks}}</td>
+              <td>{{this.createdAt}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  {{else}}
+    <div class="alert alert-info">
+      Please sign in to use the URL shortener.
+    </div>
+  {{/if}}
+</div>
+
+<script>
+document.getElementById('urlForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const url = document.getElementById('url').value;
+
+  try {
+    const response = await fetch('/url/shorten', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ url }),
+    });
+
+    if (response.ok) {
+      window.location.reload();
+    } else {
+      alert('Error shortening URL');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Error shortening URL');
+  }
+});
+</script> 

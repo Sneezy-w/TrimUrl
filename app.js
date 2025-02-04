@@ -5,7 +5,9 @@ import checkLoggedIn from "./helpers/checkLoggedIn.js";
 import cookieParser from "cookie-parser";
 //import ensureAuthenticated from "./middleware/auth.js";
 import connectDB from "./config/mongodb.js";
-
+import urlRouter from "./routes/url.js";
+import authRouter from "./routes/auth.js";
+import indexRouter from "./routes/index.js";
 connectDB();
 
 const app = express();
@@ -17,6 +19,10 @@ app.engine(
   "hbs",
   engine({
     extname: "hbs",
+    runtimeOptions: {
+      allowProtoPropertiesByDefault: true,
+      allowProtoMethodsByDefault: true,
+    },
   })
 );
 app.set("view engine", "hbs");
@@ -29,34 +35,14 @@ app.use(async (req, res, next) => {
   next();
 });
 
-app.get("/", (req, res) => {
-  res.render("home", { title: "Home" });
-});
+// Add index routes
+app.use("/", indexRouter);
 
-app.post("/auth/sessionLogin", (req, res) => {
-  const idToken = req.body.idToken.toString();
+// Add auth routes
+app.use("/auth", authRouter);
 
-  const expiresIn = 60 * 60 * 24 * 7 * 1000;
-
-  admin
-    .auth()
-    .createSessionCookie(idToken, { expiresIn })
-    .then(
-      (sessionCookie) => {
-        const options = { maxAge: expiresIn, httpOnly: true };
-        res.cookie("session", sessionCookie, options);
-        res.end(JSON.stringify({ status: "success" }));
-      },
-      (error) => {
-        res.status(401).send("UNAUTHORIZED REQUEST!");
-      }
-    );
-});
-
-app.get("/auth/sessionLogout", (req, res) => {
-  res.clearCookie("session");
-  res.redirect("/");
-});
+// Add URL routes
+app.use("/url", urlRouter);
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");

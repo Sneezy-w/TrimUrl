@@ -6,6 +6,13 @@
         </button> --}}
 
         <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto">
+                {{#if logged_in.status}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/url/dashboard/urls">Dashboard</a>
+                    </li>
+                {{/if}}
+            </ul>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item" id="loginNav">
                     <button class="nav-link btn btn-link {{#if logged_in.status}}d-none{{/if}}" onclick="signInWithGoogle()">

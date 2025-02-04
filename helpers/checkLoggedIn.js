@@ -7,6 +7,7 @@ const checkLoggedIn = async (sessionCookie) => {
     status: false,
     error: "",
     email: "",
+    uid: "",
   };
 
   if (sessionCookie != undefined) {
@@ -14,8 +15,10 @@ const checkLoggedIn = async (sessionCookie) => {
       .auth()
       .verifySessionCookie(sessionCookie, true /** checkRevoked */)
       .then(async (userData) => {
+        console.log(userData);
         response.status = true;
         response.email = userData.email;
+        response.uid = userData.uid;
       })
       .catch((error) => {
         response.error = error;

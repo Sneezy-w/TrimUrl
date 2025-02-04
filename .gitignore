@@ -11,13 +11,14 @@ yarn-error.log
 
 # Firebase config and service accounts
 config/serviceAccountKey.json
-**/firebase-config.js
+public/javascripts/firebase-config.js
 
 # IDE and Editor files
 .idea/
 .vscode/
 *.swp
 *.swo
+
 .DS_Store
 Thumbs.db
 

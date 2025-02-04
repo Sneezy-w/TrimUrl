@@ -1,12 +1,12 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="/">TrimURL</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        {{!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
-        </button>
+        </button> --}}
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
                 <li class="nav-item" id="loginNav">
                     <button class="nav-link btn btn-link {{#if logged_in.status}}d-none{{/if}}" onclick="signInWithGoogle()">
                         <i class="bi bi-google me-2"></i>Sign in with Google

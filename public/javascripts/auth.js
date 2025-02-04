@@ -5,7 +5,7 @@ class AuthManager {
     console.log("AuthManager constructor", firebaseAuth);
     this.auth = firebaseAuth;
     //this.setupAuthStateListener();
-    this.setupFormListeners();
+    //this.setupFormListeners();
   }
 
   // setupAuthStateListener() {

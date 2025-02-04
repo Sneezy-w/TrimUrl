@@ -11,6 +11,7 @@ yarn-error.log
 
 # Firebase config and service accounts
 config/serviceAccountKey.json
+config/mongodb.js
 public/javascripts/firebase-config.js
 
 # IDE and Editor files

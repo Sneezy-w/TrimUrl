@@ -1,0 +1,13 @@
+body {
+  padding: 0;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+/* 添加适当的样式，例如间距或按钮样式调整 */
+.select-address {
+  cursor: pointer;
+}

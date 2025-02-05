@@ -10,9 +10,9 @@ yarn-error.log
 .env.*.local
 
 # Firebase config and service accounts
-config/serviceAccountKey.json
-config/mongodb.js
-public/javascripts/firebase-config.js
+# config/serviceAccountKey.json
+# config/mongodb.js
+# public/javascripts/firebase-config.js
 
 # IDE and Editor files
 .idea/

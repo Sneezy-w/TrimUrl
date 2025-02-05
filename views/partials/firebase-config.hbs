@@ -1,0 +1,58 @@
+<script type="module">
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "{{firebaseClientKeys.apiKey}}",
+  authDomain: "{{firebaseClientKeys.authDomain}}",
+  projectId: "{{firebaseClientKeys.projectId}}",
+  storageBucket: "{{firebaseClientKeys.storageBucket}}",
+
+  messagingSenderId: "{{firebaseClientKeys.messagingSenderId}}",
+  appId: "{{firebaseClientKeys.appId}}",
+  measurementId: "{{firebaseClientKeys.measurementId}}",
+
+};
+
+// Initialize Firebase
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+//console.log("App", firebaseApp);
+//app.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
+//const analytics = getAnalytics(app);
+
+const firebaseAuth = firebase.auth();
+firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.NONE);
+
+
+async function signInWithGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  try {
+    const result = await firebaseAuth.signInWithPopup(provider);
+    const idToken = await result.user.getIdToken();
+
+    await fetch("/auth/sessionLogin", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        //"CSRF-Token": Cookies.get("XSRF-TOKEN"),
+      },
+      body: JSON.stringify({ idToken }),
+    });
+
+    await firebaseAuth.signOut();
+    window.location.assign("/?message=loginSuccess");
+  } catch (error) {
+    console.error("Error during Google sign in:", error);
+    alert(error.message);
+  }
+}
+
+// Make signInWithGoogle available globally
+window.signInWithGoogle = signInWithGoogle;
+
+export { firebaseAuth, firebaseApp };
+</script>

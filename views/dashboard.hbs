@@ -16,7 +16,7 @@
         </form>
       </div>
     </div>
-
+{{#if logged_in.status}}
     <h3>Your URLs</h3>
     <div class="table-responsive">
       <table class="table">
@@ -26,6 +26,7 @@
             <th>Short URL</th>
             <th>Clicks</th>
             <th>Created</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -37,14 +38,18 @@
                   {{../baseUrl}}/{{this.shortCode}}
                 </a>
               </td>
-
               <td>{{this.clicks}}</td>
               <td>{{this.createdAt}}</td>
+              <td>
+                <button onclick="copyToClipboard('{{../baseUrl}}/{{this.shortCode}}')">Copy</button>
+              </td>
             </tr>
           {{/each}}
         </tbody>
       </table>
     </div>
+  {{/if}}
+    
 </div>
 
 <script>
@@ -71,4 +76,11 @@ document.getElementById('urlForm')?.addEventListener('submit', async (e) => {
     alert('Error shortening URL');
   }
 });
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+      alert('Copied to clipboard');
+    }, function(err) {
+      console.error('Could not copy text: ', err);
+    });
+  }
 </script> 

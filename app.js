@@ -1,14 +1,7 @@
-// import dotenv from "dotenv";
-// dotenv.config({
-//   path: ".env",
-// });
 import "dotenv/config";
-
-console.log(process.env);
 
 import express from "express";
 import { engine } from "express-handlebars";
-import admin from "./config/firebase-config.js";
 import checkLoggedIn from "./helpers/checkLoggedIn.js";
 import cookieParser from "cookie-parser";
 //import ensureAuthenticated from "./middleware/auth.js";

@@ -1,14 +1,7 @@
-// import dotenv from "dotenv";
-// dotenv.config({
-//   path: ".env",
-// });
 import "dotenv/config";
-
-console.log(process.env);
 
 import express from "express";
 import { engine } from "express-handlebars";
-import admin from "./config/firebase-config.js";
 import checkLoggedIn from "./helpers/checkLoggedIn.js";
 import cookieParser from "cookie-parser";
 //import ensureAuthenticated from "./middleware/auth.js";
@@ -16,14 +9,18 @@ import connectDB from "./config/mongodb.js";
 import urlRouter from "./routes/url.js";
 import authRouter from "./routes/auth.js";
 import indexRouter from "./routes/index.js";
-
+import csrf from "csurf";
+// Connect to MongoDB
 connectDB();
 
 const app = express();
+
+// Middleware
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Handlebars
 app.engine(
   "hbs",
   engine({
@@ -37,10 +34,21 @@ app.engine(
 app.set("view engine", "hbs");
 app.set("views", "./views");
 
+// Static files
 app.use(express.static("public"));
 
+// CSRF protection
+const csrfProtection = csrf({ cookie: true });
+app.use(csrfProtection);
+
 app.use(async (req, res, next) => {
+  // Set CSRF token in cookies
+  res.cookie("XSRF-TOKEN", req.csrfToken());
+
+  // Check if user is logged in
   res.locals.logged_in = await checkLoggedIn(req.cookies.session);
+
+  // Set Firebase client keys
   res.locals.firebaseClientKeys = {
     apiKey: process.env.FIREBASE_API_KEY,
     authDomain: process.env.FIREBASE_AUTH_DOMAIN,

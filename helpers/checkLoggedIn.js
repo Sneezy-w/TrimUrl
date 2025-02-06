@@ -15,7 +15,7 @@ const checkLoggedIn = async (sessionCookie) => {
       .auth()
       .verifySessionCookie(sessionCookie, true /** checkRevoked */)
       .then(async (userData) => {
-        console.log(userData);
+        //console.log(userData);
         response.status = true;
         response.email = userData.email;
         response.uid = userData.uid;

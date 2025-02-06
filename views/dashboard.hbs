@@ -41,7 +41,7 @@
               <td>{{this.clicks}}</td>
               <td>{{this.createdAt}}</td>
               <td>
-                <button onclick="copyToClipboard('{{../baseUrl}}/{{this.shortCode}}')">Copy</button>
+                <button class="btn btn-success" onclick="copyToClipboard('{{../baseUrl}}/{{this.shortCode}}')">Copy</button>
               </td>
             </tr>
           {{/each}}

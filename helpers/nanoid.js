@@ -1,15 +1,9 @@
-import { webcrypto as crypto } from "node:crypto";
-
-// It is best to make fewer, larger requests to the crypto module to
-// avoid system call overhead. So, random numbers are generated in a
-// pool. The pool is a Buffer that is larger than the initial random
-// request size by this multiplier. The pool is enlarged if subsequent
-// requests exceed the maximum buffer size.
+import { webcrypto as crypto } from 'node:crypto';
 const POOL_SIZE_MULTIPLIER = 128;
 let pool, poolOffset;
 
 const alphabet =
-  "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
 function fillPool(bytes) {
   if (!pool || pool.length < bytes) {
@@ -35,29 +29,20 @@ export function customRandom(alphabet, defaultSize, getRandom) {
   // `2^31 - 1` number, which exceeds the alphabet size.
   // For example, the bitmask for the alphabet size 30 is 31 (00011111).
   let mask = (2 << (31 - Math.clz32((alphabet.length - 1) | 1))) - 1;
-  // Though, the bitmask solution is not perfect since the bytes exceeding
-  // the alphabet size are refused. Therefore, to reliably generate the ID,
-  // the random bytes redundancy has to be satisfied.
-
-  // Note: every hardware random generator call is performance expensive,
-  // because the system call for entropy collection takes a lot of time.
-  // So, to avoid additional system calls, extra bytes are requested in advance.
 
   // Next, a step determines how many random bytes to generate.
   // The number of random bytes gets decided upon the ID size, mask,
-  // alphabet size, and magic number 1.6 (using 1.6 peaks at performance
-  // according to benchmarks).
+  // and alphabet size
   let step = Math.ceil((1.6 * mask * defaultSize) / alphabet.length);
 
   return (size = defaultSize) => {
-    let id = "";
+    let id = '';
     while (true) {
       let bytes = getRandom(step);
-      // A compact alternative for `for (let i = 0; i < step; i++)`.
       let i = step;
       while (i--) {
         // Adding `|| ''` refuses a random byte that exceeds the alphabet size.
-        id += alphabet[bytes[i] & mask] || "";
+        id += alphabet[bytes[i] & mask] || '';
         if (id.length >= size) return id;
       }
     }
@@ -69,5 +54,3 @@ export function customAlphabet(alphabet, size = 21) {
 }
 
 export const nanoid = customAlphabet(alphabet, 8);
-//nanoid() //=> "Jd8GhBQ0"
-//console.log(nanoid());

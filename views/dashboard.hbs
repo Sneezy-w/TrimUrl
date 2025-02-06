@@ -62,6 +62,7 @@ document.getElementById('urlForm')?.addEventListener('submit', async (e) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        "CSRF-Token": Cookies.get("XSRF-TOKEN"),
       },
       body: JSON.stringify({ url }),
     });

@@ -38,7 +38,7 @@ async function signInWithGoogle() {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        //"CSRF-Token": Cookies.get("XSRF-TOKEN"),
+        "CSRF-Token": Cookies.get("XSRF-TOKEN"),
       },
       body: JSON.stringify({ idToken }),
     });

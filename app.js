@@ -10,6 +10,8 @@ import urlRouter from "./routes/url.js";
 import authRouter from "./routes/auth.js";
 import indexRouter from "./routes/index.js";
 import csrf from "csurf";
+import helmet from "helmet";
+
 // Connect to MongoDB
 connectDB();
 
@@ -40,6 +42,31 @@ app.use(express.static("public"));
 // CSRF protection
 const csrfProtection = csrf({ cookie: true });
 app.use(csrfProtection);
+
+// Helmet
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: [
+        "'self'",
+        "https://*.firebase.com",
+        "https://*.firebaseapp.com",
+        "https://*.googleapis.com",
+      ],
+      scriptSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        //"'unsafe-eval'",
+        "https://*.google.com",
+        "https://*.gstatic.com",
+        "https://*.jsdelivr.net",
+      ],
+      objectSrc: ["'none'"],
+      scriptSrcAttr: ["'unsafe-inline'"],
+      upgradeInsecureRequests: [],
+    },
+  })
+);
 
 app.use(async (req, res, next) => {
   // Set CSRF token in cookies
